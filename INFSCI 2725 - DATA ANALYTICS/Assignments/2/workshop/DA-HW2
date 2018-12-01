@@ -1,0 +1,78 @@
+1) Write a query that finds average rating of each movie.
+
+db.ratings.aggregate( [ 
+    { $group: { _id: "$MovieID", avgRating: { $avg: "$Rating" } } }, { $sort : { _id : 1 } } 
+]).pretty()
+
+2) Write a query that finds users who are similar to a given user (target user), the id of the target user is an input parameter. Users are similar to the target user if they rate the same movies.
+
+db.test.aggregate([
+    { $group: {
+        _id: "$UserID",
+        count: { $sum: 1 },
+        Movies: {$push: "$MovieID"}
+    }}
+])
+
+db.tempuser.aggregate([
+   {
+      $lookup:
+         {
+           from: "tempuser",
+           let: { numberOfMovies: "$numberOfMovies", movies: "$Movies" },
+           pipeline: [
+              { $match:
+                 { $expr:
+                    { $and:
+                       [
+                         { $eq: [ "$Movies",  "$$movies" ] },
+                         { $eq: [ "$numberOfMovies",  "$$numberOfMovies" ] }
+                       ]
+                    }
+                 }
+              }
+           ],
+           as: "moviematch"
+         }
+    },
+    { $match: { "moviematch._id": { $eq: 1} }},
+    { $match: { "_id": { $ne: 1} }},
+    { $project: { moviematch: 0}}
+]).pretty()
+
+
+
+
+db.test.insert([
+   { "_id" : 1, "MovieID" : 1, "UserID" : 1},
+   { "_id" : 2, "MovieID" : 1, "UserID" : 2},
+   { "_id" : 3, "MovieID" : 1, "UserID" : 3},
+   { "_id" : 4, "MovieID" : 1, "UserID" : 4},
+   { "_id" : 5, "MovieID" : 1, "UserID" : 5},
+   { "_id" : 6, "MovieID" : 1, "UserID" : 6},
+   { "_id" : 7, "MovieID" : 1, "UserID" : 7},
+   { "_id" : 8, "MovieID" : 1, "UserID" : 8},
+   { "_id" : 9, "MovieID" : 1, "UserID" : 9},
+   { "_id" : 10, "MovieID" : 2, "UserID" : 1},
+   { "_id" : 11, "MovieID" : 2, "UserID" : 2},
+   { "_id" : 12, "MovieID" : 1, "UserID" : 4},
+   { "_id" : 13, "MovieID" : 1, "UserID" : 11},
+   { "_id" : 14, "MovieID" : 1, "UserID" : 12},
+   { "_id" : 15, "MovieID" : 1, "UserID" : 13},
+   { "_id" : 16, "MovieID" : 1, "UserID" : 10},
+   { "_id" : 17, "MovieID" : 1, "UserID" : 14},
+   { "_id" : 18, "MovieID" : 1, "UserID" : 15},
+   { "_id" : 19, "MovieID" : 1, "UserID" : 16},
+   { "_id" : 20, "MovieID" : 1, "UserID" : 17},
+])
+
+
+3) Write a query that finds to number of movies in each genre.
+
+db.movies.aggregate([
+    { $project : { genre : { $split: ["$Genres", "|"] }, MovieID: 1} },
+    { $unwind : "$genre" },
+    { $group: { _id: "$genre", numberOfMovies: { $sum: 1 } } }
+]).pretty()
+
+4) Write 3 different queries of your choice to demonstrate that your data storage is working.

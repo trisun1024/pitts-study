@@ -1,0 +1,3 @@
+Assignment 8:  Data visualization
+
+Find at least three examples of graphical visualization of complex data.  Write a brief report that shows these examples (screen shots) and criticizes them from the point of view of some of the principles that we have talked about in class.  Are there any opportunities for improvement?  Please make sure to include proper attribution of the screen shots (i.e., addresses where they can be found on the web).

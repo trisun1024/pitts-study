@@ -1,0 +1,15 @@
+Assignment 5: Probabilistic Approaches
+
+Attached Files:	
+ NEJMon1211064.pdf (410.635 KB)
+
+Please read the attached article on the topic of correlation between Nobel prizes and chocolate consumption in various countries of the World per capita.
+Replicate the analysis, i.e., find the data that the author based his paper on and plot/calculate the correlation between the two quantities.
+Propose and test a causal explanation of the observed phenomenon by means on introducing other variables into the picture (e.g., per capita alcohol, tea, coffee, computers, video games, meat consumption, etc.).  If you find suitable data, please support your thoughts with a proper analysis.
+Summarize your observations in a brief report.
+
+It turns out that the link in the article does not work any more.  Here are two useful links for you:
+
+http://www.icco.org/about-us/international-cocoa-agreements/cat_view/30-related-documents/45-statistics-other-statistics.html
+
+http://en.wikipedia.org/wiki/List_of_countries_by_Nobel_laureates_per_capita
