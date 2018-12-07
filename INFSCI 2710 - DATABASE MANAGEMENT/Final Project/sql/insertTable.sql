@@ -116,3 +116,7 @@ INSERT INTO sales VALUES (15,11);
 INSERT INTO sales VALUES (16,111);
 INSERT INTO sales VALUES (17,11);
 INSERT INTO sales VALUES (18,11);
+
+
+
+INSERT INTO transactions VALUES (movieID,orderDate,userID,salespersonName,quantity,unitPrice) VALUES (1,'2018-12-02',13,'John',11,11)
