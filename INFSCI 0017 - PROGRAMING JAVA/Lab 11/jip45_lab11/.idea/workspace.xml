@@ -1,0 +1,452 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="5ef52024-ab6e-4c2c-ad72-840dad6ff63d" name="Default Changelist" comment="" />
+    <ignored path="$PROJECT_DIR$/out/" />
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileEditorManager">
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/edu/pitt/is18/jip45/lab11/CalculatorGUI.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="224">
+              <caret line="105" column="45" lean-forward="true" selection-start-line="105" selection-start-column="45" selection-end-line="105" selection-end-column="45" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="e#1161#1162#0" expanded="true" />
+                <element signature="e#1194#1195#0" expanded="true" />
+                <element signature="e#2766#2800#0" expanded="true" />
+                <element signature="e#2766#2800#0" expanded="true" />
+                <element signature="e#2810#2843#0" expanded="true" />
+                <element signature="e#2810#2843#0" expanded="true" />
+                <element signature="e#2853#2886#0" expanded="true" />
+                <element signature="e#2853#2886#0" expanded="true" />
+                <element signature="e#2896#2931#0" expanded="true" />
+                <element signature="e#2896#2931#0" expanded="true" />
+                <element signature="e#2941#2975#0" expanded="true" />
+                <element signature="e#2941#2975#0" expanded="true" />
+                <element signature="e#2985#3019#0" expanded="true" />
+                <element signature="e#2985#3019#0" expanded="true" />
+                <element signature="e#3029#3062#0" expanded="true" />
+                <element signature="e#3029#3062#0" expanded="true" />
+                <element signature="e#3072#3107#0" expanded="true" />
+                <element signature="e#3072#3107#0" expanded="true" />
+                <element signature="e#3117#3152#0" expanded="true" />
+                <element signature="e#3117#3152#0" expanded="true" />
+                <element signature="e#3162#3196#0" expanded="true" />
+                <element signature="e#3162#3196#0" expanded="true" />
+                <element signature="e#3206#3246#0" expanded="true" />
+                <element signature="e#3206#3246#0" expanded="true" />
+                <element signature="e#3256#3297#0" expanded="true" />
+                <element signature="e#3256#3297#0" expanded="true" />
+                <element signature="e#3307#3343#0" expanded="true" />
+                <element signature="e#3307#3343#0" expanded="true" />
+                <element signature="e#3353#3384#0" expanded="true" />
+                <element signature="e#3353#3384#0" expanded="true" />
+                <element signature="e#3394#3427#0" expanded="true" />
+                <element signature="e#3394#3427#0" expanded="true" />
+                <element signature="e#3437#3471#0" expanded="true" />
+                <element signature="e#3437#3471#0" expanded="true" />
+                <element signature="e#3481#3514#0" expanded="true" />
+                <element signature="e#3481#3514#0" expanded="true" />
+                <element signature="e#3524#3559#0" expanded="true" />
+                <element signature="e#3524#3559#0" expanded="true" />
+                <element signature="e#3569#3603#0" expanded="true" />
+                <element signature="e#3569#3603#0" expanded="true" />
+                <element signature="e#5028#5029#0" expanded="true" />
+                <element signature="e#5106#5107#0" expanded="true" />
+                <element signature="e#5255#5256#0" expanded="true" />
+                <element signature="e#5333#5334#0" expanded="true" />
+                <element signature="e#5481#5482#0" expanded="true" />
+                <element signature="e#5559#5560#0" expanded="true" />
+                <element signature="e#5707#5708#0" expanded="true" />
+                <element signature="e#5785#5786#0" expanded="true" />
+                <element signature="e#5932#5933#0" expanded="true" />
+                <element signature="e#6010#6011#0" expanded="true" />
+                <element signature="e#6159#6160#0" expanded="true" />
+                <element signature="e#6237#6238#0" expanded="true" />
+                <element signature="e#6386#6387#0" expanded="true" />
+                <element signature="e#6464#6465#0" expanded="true" />
+                <element signature="e#6612#6613#0" expanded="true" />
+                <element signature="e#6690#6691#0" expanded="true" />
+                <element signature="e#6838#6839#0" expanded="true" />
+                <element signature="e#6916#6917#0" expanded="true" />
+                <element signature="e#7083#7191#0" expanded="true" />
+                <element signature="e#6442#6462#0" expanded="true" />
+                <element signature="e#7083#7191#0" expanded="true" />
+                <element signature="e#7144#7190#0" expanded="true" />
+                <element signature="e#7163#7189#0" expanded="true" />
+                <element signature="e#6496#6516#0" expanded="true" />
+                <element signature="e#7163#7189#0" expanded="true" />
+                <element signature="e#7144#7190#0" expanded="true" />
+                <element signature="e#8249#8283#1" expanded="true" />
+                <element signature="e#8927#8928#0" expanded="true" />
+                <element signature="e#9091#9113#0" expanded="true" />
+                <element signature="e#9091#9113#0" expanded="true" />
+                <element signature="e#9127#9128#0" expanded="true" />
+                <element signature="e#9974#10051#0" expanded="true" />
+                <element signature="e#9974#10051#0" expanded="true" />
+                <element signature="e#9759#9785#0" expanded="true" />
+                <element signature="e#10118#10144#0" expanded="true" />
+                <element signature="e#10118#10144#0" expanded="true" />
+                <element signature="e#10238#10607#0" expanded="true" />
+                <element signature="e#10242#10262#0" expanded="true" />
+                <element signature="e#10242#10262#0" expanded="true" />
+                <element signature="e#10238#10607#0" expanded="true" />
+                <element signature="e#10317#10607#0" expanded="true" />
+                <element signature="e#10321#10341#0" expanded="true" />
+                <element signature="e#10321#10341#0" expanded="true" />
+                <element signature="e#10317#10607#0" expanded="true" />
+                <element signature="e#10396#10607#0" expanded="true" />
+                <element signature="e#10400#10420#0" expanded="true" />
+                <element signature="e#10400#10420#0" expanded="true" />
+                <element signature="e#10396#10607#0" expanded="true" />
+                <element signature="e#10475#10607#0" expanded="true" />
+                <element signature="e#10479#10499#0" expanded="true" />
+                <element signature="e#10479#10499#0" expanded="true" />
+                <element signature="e#10475#10607#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>calculator</find>
+      <find>ac</find>
+      <find>AC</find>
+    </findStrings>
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/src/edu/pitt/is18/jip45/lab11/Calculator.java" />
+        <option value="$PROJECT_DIR$/src/edu/pitt/is18/jip45/lab11/main.java" />
+        <option value="$PROJECT_DIR$/src/edu/pitt/is18/jip45/lab11/CalculatorGUI.java" />
+      </list>
+    </option>
+  </component>
+  <component name="ProjectFrameBounds">
+    <option name="y" value="23" />
+    <option name="width" value="1440" />
+    <option name="height" value="830" />
+  </component>
+  <component name="ProjectView">
+    <navigator proportions="" version="1">
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="jip45_lab11" type="b2602c69:ProjectViewProjectNode" />
+              <item name="jip45_lab11" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="jip45_lab11" type="b2602c69:ProjectViewProjectNode" />
+              <item name="jip45_lab11" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="jip45_lab11" type="b2602c69:ProjectViewProjectNode" />
+              <item name="jip45_lab11" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="lab11" type="462c0819:PsiDirectoryNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+      <pane id="PackagesPane" />
+      <pane id="Scope" />
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="aspect.path.notification.shown" value="true" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1544235987975" />
+    <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
+    <property name="nodejs_npm_path_reset_for_default_project" value="true" />
+    <property name="project.structure.last.edited" value="Project" />
+    <property name="project.structure.proportion" value="0.0" />
+    <property name="project.structure.side.proportion" value="0.0" />
+    <property name="restartRequiresConfirmation" value="false" />
+    <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="RunManager" selected="Application.CalculatorGUI">
+    <configuration name="CalculatorGUI" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="edu.pitt.is18.jip45.lab11.CalculatorGUI" />
+      <module name="jip45_lab11" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="edu.pitt.is18.jip45.lab11.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="edu.pitt.is18.jip45.lab11.main" />
+      <module name="jip45_lab11" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="edu.pitt.is18.jip45.lab11.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.CalculatorGUI" />
+        <item itemvalue="Application.main" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="5ef52024-ab6e-4c2c-ad72-840dad6ff63d" name="Default Changelist" comment="" />
+      <created>1543965689735</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1543965689735</updated>
+      <workItem from="1543965692483" duration="2519000" />
+      <workItem from="1543972531019" duration="9693000" />
+      <workItem from="1544154813163" duration="988000" />
+      <workItem from="1544158188207" duration="5939000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TimeTrackingManager">
+    <option name="totallyTimeSpent" value="19139000" />
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="0" y="23" width="1440" height="830" extended-state="0" />
+    <editor active="true" />
+    <layout>
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.26037195" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info id="Image Layers" order="2" />
+      <window_info id="Designer" order="3" />
+      <window_info id="UI Designer" order="4" />
+      <window_info id="Capture Tool" order="5" />
+      <window_info id="Favorites" order="6" side_tool="true" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.32963988" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.32963988" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.39889196" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Version Control" order="8" />
+      <window_info anchor="bottom" id="Database Changes" order="9" />
+      <window_info anchor="bottom" id="Terminal" order="10" />
+      <window_info anchor="bottom" id="Event Log" order="11" side_tool="true" weight="0.32963988" />
+      <window_info anchor="bottom" id="Messages" order="12" weight="0.32963988" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="right" id="Palette" order="3" />
+      <window_info anchor="right" id="Theme Preview" order="4" />
+      <window_info anchor="right" id="Maven" order="5" />
+      <window_info anchor="right" id="Capture Analysis" order="6" />
+      <window_info anchor="right" id="Palette&#9;" order="7" />
+      <window_info anchor="right" id="Database" order="8" />
+    </layout>
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/src/edu/pitt/is18/jip45/lab11/Calculator.java" />
+    <entry file="file://$PROJECT_DIR$/src/edu/pitt/is18/jip45/lab11/main.java" />
+    <entry file="file://$PROJECT_DIR$/src/edu/pitt/is18/jip45/lab11/CalculatorGUI.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="224">
+          <caret line="105" column="45" lean-forward="true" selection-start-line="105" selection-start-column="45" selection-end-line="105" selection-end-column="45" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#1161#1162#0" expanded="true" />
+            <element signature="e#1194#1195#0" expanded="true" />
+            <element signature="e#2766#2800#0" expanded="true" />
+            <element signature="e#2766#2800#0" expanded="true" />
+            <element signature="e#2810#2843#0" expanded="true" />
+            <element signature="e#2810#2843#0" expanded="true" />
+            <element signature="e#2853#2886#0" expanded="true" />
+            <element signature="e#2853#2886#0" expanded="true" />
+            <element signature="e#2896#2931#0" expanded="true" />
+            <element signature="e#2896#2931#0" expanded="true" />
+            <element signature="e#2941#2975#0" expanded="true" />
+            <element signature="e#2941#2975#0" expanded="true" />
+            <element signature="e#2985#3019#0" expanded="true" />
+            <element signature="e#2985#3019#0" expanded="true" />
+            <element signature="e#3029#3062#0" expanded="true" />
+            <element signature="e#3029#3062#0" expanded="true" />
+            <element signature="e#3072#3107#0" expanded="true" />
+            <element signature="e#3072#3107#0" expanded="true" />
+            <element signature="e#3117#3152#0" expanded="true" />
+            <element signature="e#3117#3152#0" expanded="true" />
+            <element signature="e#3162#3196#0" expanded="true" />
+            <element signature="e#3162#3196#0" expanded="true" />
+            <element signature="e#3206#3246#0" expanded="true" />
+            <element signature="e#3206#3246#0" expanded="true" />
+            <element signature="e#3256#3297#0" expanded="true" />
+            <element signature="e#3256#3297#0" expanded="true" />
+            <element signature="e#3307#3343#0" expanded="true" />
+            <element signature="e#3307#3343#0" expanded="true" />
+            <element signature="e#3353#3384#0" expanded="true" />
+            <element signature="e#3353#3384#0" expanded="true" />
+            <element signature="e#3394#3427#0" expanded="true" />
+            <element signature="e#3394#3427#0" expanded="true" />
+            <element signature="e#3437#3471#0" expanded="true" />
+            <element signature="e#3437#3471#0" expanded="true" />
+            <element signature="e#3481#3514#0" expanded="true" />
+            <element signature="e#3481#3514#0" expanded="true" />
+            <element signature="e#3524#3559#0" expanded="true" />
+            <element signature="e#3524#3559#0" expanded="true" />
+            <element signature="e#3569#3603#0" expanded="true" />
+            <element signature="e#3569#3603#0" expanded="true" />
+            <element signature="e#5028#5029#0" expanded="true" />
+            <element signature="e#5106#5107#0" expanded="true" />
+            <element signature="e#5255#5256#0" expanded="true" />
+            <element signature="e#5333#5334#0" expanded="true" />
+            <element signature="e#5481#5482#0" expanded="true" />
+            <element signature="e#5559#5560#0" expanded="true" />
+            <element signature="e#5707#5708#0" expanded="true" />
+            <element signature="e#5785#5786#0" expanded="true" />
+            <element signature="e#5932#5933#0" expanded="true" />
+            <element signature="e#6010#6011#0" expanded="true" />
+            <element signature="e#6159#6160#0" expanded="true" />
+            <element signature="e#6237#6238#0" expanded="true" />
+            <element signature="e#6386#6387#0" expanded="true" />
+            <element signature="e#6464#6465#0" expanded="true" />
+            <element signature="e#6612#6613#0" expanded="true" />
+            <element signature="e#6690#6691#0" expanded="true" />
+            <element signature="e#6838#6839#0" expanded="true" />
+            <element signature="e#6916#6917#0" expanded="true" />
+            <element signature="e#7083#7191#0" expanded="true" />
+            <element signature="e#6442#6462#0" expanded="true" />
+            <element signature="e#7083#7191#0" expanded="true" />
+            <element signature="e#7144#7190#0" expanded="true" />
+            <element signature="e#7163#7189#0" expanded="true" />
+            <element signature="e#6496#6516#0" expanded="true" />
+            <element signature="e#7163#7189#0" expanded="true" />
+            <element signature="e#7144#7190#0" expanded="true" />
+            <element signature="e#8249#8283#1" expanded="true" />
+            <element signature="e#8927#8928#0" expanded="true" />
+            <element signature="e#9091#9113#0" expanded="true" />
+            <element signature="e#9091#9113#0" expanded="true" />
+            <element signature="e#9127#9128#0" expanded="true" />
+            <element signature="e#9974#10051#0" expanded="true" />
+            <element signature="e#9974#10051#0" expanded="true" />
+            <element signature="e#9759#9785#0" expanded="true" />
+            <element signature="e#10118#10144#0" expanded="true" />
+            <element signature="e#10118#10144#0" expanded="true" />
+            <element signature="e#10238#10607#0" expanded="true" />
+            <element signature="e#10242#10262#0" expanded="true" />
+            <element signature="e#10242#10262#0" expanded="true" />
+            <element signature="e#10238#10607#0" expanded="true" />
+            <element signature="e#10317#10607#0" expanded="true" />
+            <element signature="e#10321#10341#0" expanded="true" />
+            <element signature="e#10321#10341#0" expanded="true" />
+            <element signature="e#10317#10607#0" expanded="true" />
+            <element signature="e#10396#10607#0" expanded="true" />
+            <element signature="e#10400#10420#0" expanded="true" />
+            <element signature="e#10400#10420#0" expanded="true" />
+            <element signature="e#10396#10607#0" expanded="true" />
+            <element signature="e#10475#10607#0" expanded="true" />
+            <element signature="e#10479#10499#0" expanded="true" />
+            <element signature="e#10479#10499#0" expanded="true" />
+            <element signature="e#10475#10607#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+  </component>
+  <component name="masterDetails">
+    <states>
+      <state key="GlobalLibrariesConfigurable.UI">
+        <settings>
+          <last-edited>mongo-java-driver-3.8.2-javadoc</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="JdkListConfigurable.UI">
+        <settings>
+          <last-edited>1.8</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="ProjectJDKs.UI">
+        <settings>
+          <last-edited>1.8</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="ProjectLibrariesConfigurable.UI">
+        <settings>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+    </states>
+  </component>
+</project>
