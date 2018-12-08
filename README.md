@@ -12,6 +12,7 @@
 2019 Spring
 
 1. Cloud Computing
-2. Human I P
+2. Human Information Processing
 3. Advanced Database Management
 4. Data Mining
+5. Information Storage & Retrieval
