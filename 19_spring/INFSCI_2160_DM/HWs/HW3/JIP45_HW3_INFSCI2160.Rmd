@@ -1,0 +1,342 @@
+---
+title: "JIP45_HW3_INFSCI2160"
+author: "Jing Pang"
+date: "2/4/2019"
+output: html_document
+---
+
+## Goal: Predict binary (salary) target variables.
+Use logistic regression and KNN to predict salary.
+
+```{r warning=FALSE}
+# load librarys
+library(dplyr)
+library(ggplot2)
+library(glmnet)
+library(pROC)
+library(rsample)
+library(randomForest)
+library(MASS)
+library(gridExtra)
+library(class)
+library(caret)
+
+# import dataset in R 
+adult <- read.csv("~/Dropbox/19 Spring/INFSCI_2160_DM/HWs/HW3/hw3_adult.csv")
+```
+
+### Question #1
+* How did you choose which variables to use? Which techniques did you use for feature selection?
+* What are some of your most important variables? Use evidence to support your answer.
+
+In this project, after we load the dataset into R. We applied the command summary to see the detailed information of dataset. And later, we plot the density graph of numerical variables. From the figures, we recognize that the feature Age is a right-skewed distribution, and feature Education_num is a kind of left-skewed distribution. Therefore, we applied log on the data of feature Age and applied square on the data of feature Education_num. Later on, we normalize the dataset with min-max on the date of Captical_gain and Captial_loss, and with z-score on the rest of features.
+
+
+```{r warning=FALSE}
+# Dataset summary 
+summary(adult)
+
+# correlation matrix 
+adult.num <- adult[,c("Age", "Education_num", "Captical_gain", "Captial_loss", "Hours_per_week")]
+cor(adult.num)
+
+# density graph in numerical variables
+
+p1<-ggplot(adult, aes(x = adult$Age)) + geom_density()
+p2<-ggplot(adult, aes(x = adult$Education_num)) + geom_density()
+p3<-ggplot(adult, aes(x = adult$Captical_gain)) + geom_density()
+p4<-ggplot(adult, aes(x = adult$Captial_loss)) + geom_density()
+p5<-ggplot(adult, aes(x = adult$Hours_per_week)) + geom_density()
+grid.arrange(p1,p2,p3,p4,p5,ncol=3)
+
+# how many zero value in variables 
+sum(adult$Captical_gain==0)
+sum(adult$Captial_loss==0)
+
+# normalization of numerical variables
+# Age
+adult$Age.fix <- log10(adult$Age)
+adult$Age.norm <- (adult$Age.fix - mean(adult$Age.fix))/sd(adult$Age.fix)
+# Education_num
+adult$Education_num.fix <- (adult$Education_num)^2
+adult$Education_num.norm <- (adult$Education_num.fix - mean(adult$Education_num.fix))/sd(adult$Education_num.fix)
+# Hours_per_week
+adult$Hours_per_week.norm <- (adult$Hours_per_week - mean(adult$Hours_per_week))/sd(adult$Hours_per_week)
+# Captical_gain
+min_Captical_gain<-min(adult$Captical_gain)
+max_Captical_gain<-max(adult$Captical_gain)
+adult$Captical_gain.norm <- (adult$Captical_gain - min_Captical_gain)/(max_Captical_gain - min_Captical_gain)
+# Captial_loss
+min_Captial_loss<-min(adult$Captial_loss)
+max_Captial_loss<-max(adult$Captial_loss)
+adult$Captial_loss.norm <- (adult$Captial_loss - min_Captial_loss)/(max_Captial_loss - min_Captial_loss)
+# Salary
+adult$Salary.norm <- ifelse(as.numeric(adult$Salary)==1, 0, 1)
+  
+p1<-ggplot(adult, aes(x = adult$Age.norm)) + geom_density()
+p2<-ggplot(adult, aes(x = adult$Education_num.norm)) + geom_density()
+p3<-ggplot(adult, aes(x = adult$Hours_per_week.norm)) + geom_density()
+grid.arrange(p1,p2,p3,ncol=2)
+
+```
+
+#### Logistic Regression Model
+
+In this case, we apply the dataset with a Logistic Regression model with some features. Therefore, we can easily use p-value to analysis features to eliminate most unnecessary features. Then, we will ignore these three features, Fnlwgt, Race, and Native-Country; and rebuild a model with rest of features. 
+
+```{r}
+# run on logistic regression model
+adult_log_test1 <- glm(Salary ~ Age.norm + Workclass + Fnlwgt + Education + Education_num.norm + Marital_status + Occupation + Relationship + Race + Sex + Captical_gain.norm + Captial_loss.norm + Hours_per_week.norm + Native_country, family = binomial, data = adult)
+summary(adult_log_test1)
+
+# Ignore Fnlwgt, Race, and Native-Country, ignore features causing singularities, build a new
+adult_log_test2 <- glm(Salary ~ Age.norm + Workclass + Education + Marital_status + Occupation + Relationship + Sex + Captical_gain.norm + Captial_loss.norm + Hours_per_week.norm, family = binomial, data = adult)
+summary(adult_log_test2)
+
+```
+
+Hence, we use AIC method to make feature selection again. In this case, the result shows us that the model with test 2 features is already a more suitable model than test 1. 
+
+```{r}
+# use AIC 
+adult_adult_logit_stepwise_backward <- stepAIC(adult_log_test2, direction = "backward")
+adult_adult_logit_stepwise_forward <- stepAIC(adult_log_test2, direction = "forward")
+
+# create final dataset with features
+adult_df <- adult[,c("Age.norm","Workclass" , "Education" , "Marital_status" ,"Occupation" , "Relationship" ,"Sex" , "Captical_gain.norm", "Captial_loss.norm", "Hours_per_week.norm", "Salary.norm")]
+
+summary(adult_df)
+plot(adult_df)
+```
+
+
+### Question #2
+
+
+```{r}
+# split dataset into training and testing dataset
+adult_df.prep <- adult_df[, c("Age.norm", "Workclass" , "Education" , "Marital_status" ,"Occupation" , "Relationship" ,"Sex", "Captical_gain.norm", "Captial_loss.norm", "Hours_per_week.norm", "Salary.norm")] 
+adult_df.prep[, c("Workclass" , "Education" , "Marital_status" ,"Occupation" , "Relationship" ,"Sex")] <- lapply(adult_df.prep[, c("Workclass" , "Education" , "Marital_status" ,"Occupation" , "Relationship" ,"Sex")], as.factor)
+adult_df.prep[, c("Workclass" , "Education" , "Marital_status" ,"Occupation" , "Relationship" ,"Sex")] <- lapply(adult_df.prep[, c("Workclass" , "Education" , "Marital_status" ,"Occupation" , "Relationship" ,"Sex")], as.numeric)
+
+set.seed(123)
+adult_split <- initial_split(adult_df.prep, 0.8)
+adult_train_tbl <- training(adult_split)
+adult_test_tbl <- testing(adult_split)
+
+adult_vars_train <- adult_train_tbl[, c("Age.norm","Workclass" , "Education" , "Marital_status" ,"Occupation" , "Relationship" ,"Sex" ,  "Captical_gain.norm", "Captial_loss.norm","Hours_per_week.norm")]
+adult_vars_test <- adult_test_tbl[, c("Age.norm","Workclass" , "Education" , "Marital_status" ,"Occupation" , "Relationship" ,"Sex" , "Captical_gain.norm", "Captial_loss.norm", "Hours_per_week.norm")]
+adult_target_train <- adult_train_tbl[, c("Salary.norm")]
+adult_target_test <- adult_test_tbl[, c("Salary.norm")]
+
+# LASSO & RIDGE
+set.seed(123)
+adult_cv_lasso = cv.glmnet(x = as.matrix(adult_vars_train), y = as.numeric(adult_target_train), alpha=1)
+plot(adult_cv_lasso, label=TRUE)
+adult_cv_ridge = cv.glmnet(x = as.matrix(adult_vars_train), y = as.numeric(adult_target_train), alpha=0)
+plot(adult_cv_ridge, label=TRUE)
+
+# lambda min
+bestlam_lasso <- adult_cv_lasso$lambda.min
+bestlam_ridge <- adult_cv_ridge$lambda.min
+
+lasso.pred_adult = predict(adult_cv_lasso, s = bestlam_lasso, newx = as.matrix(adult_vars_test))
+adult_mse_lasso <- mean((lasso.pred_adult - adult_test_tbl$Salary)^2)
+
+ridge.pred_adult = predict(adult_cv_ridge, s = bestlam_ridge, newx = as.matrix(adult_vars_test))
+adult_mse_ridge <- mean((ridge.pred_adult - adult_test_tbl$Salary)^2)
+
+t_lamd_mse <- matrix(c(bestlam_lasso,bestlam_ridge,adult_mse_lasso,adult_mse_ridge),ncol=2,byrow=TRUE)
+colnames(t_lamd_mse) <- c("LASSO","RIDGE")
+rownames(t_lamd_mse) <- c("lambda", "MSE")
+as.table(t_lamd_mse)
+
+
+```
+
+##### Logistic Regression & KNN Model
+
+```{r}
+# run Logistic and predict
+adult_log <- glm(Salary.norm ~ Age.norm + Workclass + Education + Marital_status + Occupation + Relationship + Sex + Captical_gain.norm + Captial_loss.norm + Hours_per_week.norm, family = binomial, data = adult_train_tbl)
+summary(adult_log)
+
+# prediction column in test dataset
+adult_test_pred <- adult_test_tbl %>%
+  mutate(P_TEST = predict(adult_log, newdata = adult_test_tbl, type = "response"),
+         P_RESP = ifelse(P_TEST >= 0.5, 1, 0))
+
+# KNN2
+adult_test_pred$PRED_KNN2 <- knn(train = adult_train_tbl, test = adult_test_tbl, cl = adult_train_tbl$Salary.norm, k = 2, prob = TRUE)
+
+adult_test_pred$CORRECT_KNN2 <- ifelse(adult_test_pred$Salary.norm == adult_test_pred$PRED_KNN2, 1, 0)
+
+# KNN5
+adult_test_pred$PRED_KNN5 <- knn(train = adult_train_tbl, test = adult_test_tbl, cl = adult_train_tbl$Salary.norm, k = 5, prob = TRUE)
+
+adult_test_pred$CORRECT_KNN5 <- ifelse(adult_test_pred$Salary.norm == adult_test_pred$PRED_KNN5, 1, 0)
+
+# Plot result
+# ROC & AUC of Logistic
+adult_log_roc <- roc(adult_test_pred$Salary.norm, adult_test_pred$P_TEST)
+adult_log_auc <- auc(adult_log_roc)
+
+# ROC & AUC of KNN2
+adult_knn2_roc <- roc(adult_test_pred$Salary.norm, as.numeric(adult_test_pred$PRED_KNN2))
+adult_knn2_auc <- auc(adult_knn2_roc)
+
+# ROC & AUC of KNN5
+adult_knn5_roc <- roc(adult_test_pred$Salary.norm, as.numeric(adult_test_pred$PRED_KNN5))
+adult_knn5_auc <- auc(adult_knn5_roc)
+
+```
+
+
+* How do your models perform on training vs. testing data? Is your model overfit? How can you tell? Which techniques did you use to validate your model?
+
+```{r}
+# Logistic Regression
+# original training
+adult_train_tbl <- adult_train_tbl %>%
+  mutate(P_TEST = predict(adult_log, newdata = adult_train_tbl, type = "response"),
+         P_RESP = ifelse(P_TEST >= 0.5, 1, 0))
+
+# ROC & AUC of Logistic
+adult_log_train_roc <- roc(adult_train_tbl$Salary.norm, adult_train_tbl$P_TEST)
+adult_log_train_auc <- auc(adult_log_train_roc)
+
+adult_log_auc
+adult_log_train_auc
+plot(adult_log_roc, main = "Logistic Model ROC curve on training dataset")
+plot(adult_log_train_roc, main = "Logistic Model ROC curve on testing dataset")
+
+# KNN 
+
+KNN2_CORRECT <- sum(adult_test_pred$CORRECT_KNN2)/399
+KNN2_CORRECT
+KNN5_CORRECT <- sum(adult_test_pred$CORRECT_KNN5)/399
+KNN5_CORRECT
+
+
+PRED_KNN2 <- knn(train = adult_train_tbl, test = adult_train_tbl, cl = adult_train_tbl$Salary.norm, k = 2, prob = TRUE)
+PRED_KNN5 <- knn(train = adult_train_tbl, test = adult_train_tbl, cl = adult_train_tbl$Salary.norm, k = 5, prob = TRUE)
+adult_train_pred <- data.frame(adult_train_tbl$Salary.norm, PRED_KNN2, PRED_KNN5)
+
+adult_train_pred$CORRECT_KNN2 <- ifelse(adult_train_pred$adult_train_tbl.Salary.norm == adult_train_pred$PRED_KNN2, 1, 0)
+adult_train_pred$CORRECT_KNN5 <- ifelse(adult_train_pred$adult_train_tbl.Salary.norm == adult_train_pred$PRED_KNN5, 1, 0)
+
+KNN2_CORRECT <- sum(adult_train_pred$CORRECT_KNN2)/1600
+KNN2_CORRECT
+KNN5_CORRECT <- sum(adult_train_pred$CORRECT_KNN5)/1600
+KNN5_CORRECT
+
+# KNN in testing data 
+adult_knn2_roc_plot <- plot(adult_knn2_roc, main = "KNN2 Model ROC curve on testing data")
+adult_knn5_roc_plot <- plot(adult_knn5_roc, main = "KNN5 Model ROC curve on testing data")
+
+# ROC & AUC of KNN2
+adult_knn2_train_roc <- roc(adult_train_pred$adult_train_tbl.Salary.norm, as.numeric(adult_train_pred$PRED_KNN2))
+adult_knn2_train_auc <- auc(adult_knn2_train_roc)
+
+# ROC & AUC of KNN5
+adult_knn5_train_roc <- roc(adult_train_pred$adult_train_tbl.Salary.norm, as.numeric(adult_train_pred$PRED_KNN5))
+adult_knn5_train_auc <- auc(adult_knn5_train_roc)
+
+adult_knn2_train_roc_plot <- plot(adult_knn2_train_auc, main = "KNN2 Model ROC curve on training data")
+adult_knn5_train_roc_plot <- plot(adult_knn5_train_roc, main = "KNN5 Model ROC curve on training data")
+
+
+```
+
+From the comparison of original training and testing datasets, the result presents that the value of Salary in training dataset is a little larger than the predicted value in the testing dataset, which is about 0.005 difference between this two. Therefore, this model currently fits perfectly as expected.
+
+* Are you confident in your model? Why or why not?
+
+Similar concepts as before, this model performs a reasonable ROC and AUC values in both training and testing dataset.  
+
+### Question #3
+
+* Plot the ROC curves for both of your models.
+
+```{r}
+# plot 
+adult_log_roc_plot <- plot(adult_log_roc, main = "Logistic Model ROC curve")
+adult_knn2_roc_plot <- plot(adult_knn2_roc, main = "KNN2 Model ROC curve")
+adult_knn5_roc_plot <- plot(adult_knn5_roc, main = "KNN5 Model ROC curve")
+```
+
+* What is the AUC for your models? Which model performs better in terms of AUC?
+
+
+```{r}
+adult_log_auc
+ci.auc(adult_log_auc)
+adult_knn2_auc
+ci.auc(adult_knn2_auc)
+adult_knn5_auc
+ci.auc(adult_knn5_auc)
+```
+
+The data clearly shown that KNN model performs better result than Logistic Regression model.
+
+### Question #4
+
+##### Create a confusion matrix on your testing data to and answer the following questions:
+* What is the accuracy of your models?
+* What is the precision of your model?
+* What is the negative predictive value of your model?
+* What is the sensitivity of your model?
+* What is the specificity of your model?
+* What is the F-1 score of your model?
+
+```{r}
+# confusion matrix
+true_salary <- adult_test_pred$Salary.norm
+log_pred_salary <- adult_test_pred$P_RESP
+knn2_pred_salary <- adult_test_pred$PRED_KNN2
+knn5_pred_salary <- adult_test_pred$PRED_KNN5
+
+log_conf_mat <- table(true_salary, log_pred_salary)
+knn2_conf_mat <- table(true_salary, knn2_pred_salary)
+knn5_conf_mat <- table(true_salary, knn5_pred_salary)
+
+confusionMatrix(log_conf_mat, mode = "everything", positive="1")
+confusionMatrix(knn2_conf_mat, mode = "everything", positive="1")
+confusionMatrix(knn5_conf_mat, mode = "everything", positive="1")
+```
+
+
+### Question 5
+* How did you choose your threshold for classification?
+
+```{r}
+# AUC at different thresholds based on our ROC plot
+adult_log_thresholds <- data.frame(ci.thresholds(adult_log_roc))
+print(adult_log_thresholds)
+
+# new threshold increase our sensitivity and specificity
+
+p_test_quantiles <- quantile(adult_test_pred$P_TEST, probs = seq(0, 1, 0.20), na.rm = FALSE, names = TRUE, type = 9)
+p_test_quantiles
+
+adult_test_pred <- adult_test_tbl %>%
+  mutate(P_TEST = predict(adult_log, newdata = adult_test_tbl, type = "response"),
+         P_RESP = ifelse(P_TEST >= 0.5, 1, 0))
+
+adult_test_pred <- adult_test_pred %>%
+  mutate(prob_bins = ifelse(P_TEST <= 0.064322730 , "Bin 1",
+                           ifelse(P_TEST > 0.064322730  & P_TEST <= 0.125950274, "Bin 2",
+                                  ifelse(P_TEST > 0.125950274 & P_TEST <= 0.246421953 , "Bin 3",
+                                         ifelse(P_TEST > 0.246421953 & P_TEST <= 0.416435684, "Bin 4",
+                                                ifelse(P_TEST > 0.416435684, "Bin 5", "Max Bin"))))))
+
+prob_bins <- adult_test_pred$prob_bins
+
+table(true_salary, log_pred_salary, prob_bins)
+
+```
+
+* Based on question 4, what are some good things about your model? What are some limitations of your model?
+
+In this case, we are using two algorithms Logistic Regression and KNN to predict Salary of the Adult dataset. Because the feature of Salary is a binary feature that only contains two categories ( <=50K and >50K). The Logistic Regression model is really good at this kind of prediction range, and produce a range of values between 0 to 1 in order to fulfill the target. However, the KNN model performs better prediction than the Logistic Regression model. This indicates that the KNN model is more sensitive than Logistic Regression model in this prediction based on "Adult" dataset. But the KNN model has an obvious problem on feature types. It requires features are all numeric type. In the dataset, nearly half of features are categories. And if we convert them into numeric, this is not an absolutely accurate way to assign them. 
+
