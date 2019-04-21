@@ -1,10 +1,3 @@
-# -----------------------------------------#
-#         NY-TIMES WORD CORPUS CRAWLER     #
-#                                          #
-# Subhendu Sethi (CS13B1027@iith.ac.in)    #
-# Rahul Kumar (ES13B1018@iith.ac.in)       #
-# Prashant Dewangan (CS13B1025@iith.ac.in) #
-# -----------------------------------------#
 
 import socket
 import sys
