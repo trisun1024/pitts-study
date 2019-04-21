@@ -1,0 +1,123 @@
+-- get user trans
+SELECT t.ACCT_ID, OPP_ACCT_ID, TR_TM, TR_NO, TR_AM, OPR_ID, -1 AS FLAG
+FROM transaction t, cust_acct ca
+WHERE t.CUST_ID = 85888307 AND t.CUST_ID = ca.CUST_ID AND ca.ACCT_ID = t.ACCT_ID
+UNION ALL 
+SELECT t.ACCT_ID, OPP_ACCT_ID, TR_TM, TR_NO, TR_AM, OPR_ID, 1 AS FLAG
+FROM transaction t, cust_acct ca
+WHERE t.CUST_ID = 85888307 AND t.CUST_ID = ca.CUST_ID AND ca.ACCT_ID = t.OPP_ACCT_ID
+
+-- get user aggregation
+
+SELECT SUM(TOT_IN_AMOUNT) AS tot_sum, SUM(COUNT_IN) AS tot_count
+FROM CustInFact
+WHERE CUST_ID = 85888307
+UNION ALL 
+SELECT SUM(TOT_OUT_AMOUNT) AS tot_sum, SUM(COUNT_OUT) AS tot_count
+FROM CustOutFact
+WHERE CUST_ID = 85888307
+
+-- get card trans
+SELECT t.ACCT_ID, t.OPP_ACCT_ID, TR_TM, TR_NO, TR_AM, OPR_ID, -1 AS FLAG
+FROM transaction t, cust_acct ca
+WHERE t.CUST_ID = 85888307 AND t.CUST_ID = ca.CUST_ID AND ca.ACCT_ID = t.ACCT_ID AND t.ACCT_ID = 4994257904
+UNION ALL 
+SELECT t.ACCT_ID, t.OPP_ACCT_ID, TR_TM, TR_NO, TR_AM, OPR_ID, 1 AS FLAG
+FROM transaction t, cust_acct ca
+WHERE t.CUST_ID = 85888307 AND t.CUST_ID = ca.CUST_ID AND ca.ACCT_ID = t.OPP_ACCT_ID AND t.OPP_ACCT_ID = 4994257904
+
+-- card aggregation 
+SELECT SUM(TOT_IN_AMOUNT), SUM(COUNT_IN)
+FROM CustInFact
+WHERE CUST_ID = 85888307 AND ACCT_ID = 4994257904
+UNION ALL 
+SELECT SUM(TOT_OUT_AMOUNT), SUM(COUNT_OUT)
+FROM CustOutFact
+WHERE CUST_ID = 85888307 AND ACCT_ID = 4994257904
+
+
+-- institute trans
+SELECT t.ACCT_ID, t.OPP_ACCT_ID, TR_TM, TR_NO, TR_AM, OPR_ID, -1 AS FLAG
+FROM transaction t, cust_acct ca, teller te
+WHERE t.CUST_ID = 85888307 AND t.CUST_ID = ca.CUST_ID AND ca.ACCT_ID = t.ACCT_ID AND t.ACCT_ID = 4994257904 AND t.OPR_ID = te.GUIYDAIH AND te.YNGYJIGO = 688002 
+UNION ALL 
+SELECT t.ACCT_ID, t.OPP_ACCT_ID, TR_TM, TR_NO, TR_AM, OPR_ID, 1 AS FLAG
+FROM transaction t, cust_acct ca, teller te WHERE t.CUST_ID = 85888307 AND t.CUST_ID = ca.CUST_ID AND ca.ACCT_ID = t.OPP_ACCT_ID AND t.OPP_ACCT_ID = 4994257904 AND t.OPR_ID = te.GUIYDAIH AND te.YNGYJIGO = 688002 
+
+-- get institute aggreg
+SELECT SUM(TR_AM), COUNT(TR_NO)
+FROM transaction t, cust_acct ca, teller te
+WHERE t.CUST_ID = 85888307 AND t.CUST_ID = ca.CUST_ID AND ca.ACCT_ID = t.ACCT_ID AND t.ACCT_ID = 4994257904 AND t.OPR_ID = te.GUIYDAIH AND te.YNGYJIGO = 688002
+
+-- get teller trans
+SELECT ACCT_ID, OPP_ACCT_ID, TR_TM, TR_NO, TR_AM, OPR_ID
+FROM transaction
+WHERE OPR_ID = 'YL0001' 
+
+
+-- get chief instit trans 
+SELECT ACCT_ID, OPP_ACCT_ID, TR_TM, TR_NO, TR_AM, OPR_ID
+FROM transaction t, teller te
+WHERE t.OPR_ID = te.GUIYDAIH AND te.YNGYJIGO = (SELECT YNGYJIGO
+    FROM teller
+    WHERE GUIYDAIH = 1041 AND level = 1)
+
+-- get chief instit aggreg
+SELECT SUM(TR_AM), COUNT(TR_NO)
+FROM transaction t, teller te
+WHERE t.OPR_ID = te.GUIYDAIH AND te.YNGYJIGO = (SELECT YNGYJIGO
+    FROM teller
+    WHERE GUIYDAIH = 1041 AND level = 1)
+
+-- get chief operator trans
+SELECT ACCT_ID, OPP_ACCT_ID, TR_TM, TR_NO, TR_AM, OPR_ID
+FROM transaction t, teller te
+WHERE t.OPR_ID = te.GUIYDAIH AND te.YNGYJIGO = (SELECT YNGYJIGO
+    FROM teller
+    WHERE GUIYDAIH = 1041 AND level = 1) AND t.OPR_ID = 'AT1177'
+
+
+-- get chief operator aggreg
+SELECT SUM(TR_AM), COUNT(TR_NO)
+FROM transaction t, teller te
+WHERE t.OPR_ID = te.GUIYDAIH AND te.YNGYJIGO = (SELECT YNGYJIGO
+    FROM teller
+    WHERE GUIYDAIH = 1041 AND level = 1) AND t.OPR_ID = 'AT1177'
+
+
+--get chief account trans
+
+SELECT ACCT_ID, OPP_ACCT_ID, TR_TM, TR_NO, TR_AM, OPR_ID
+FROM transaction t, teller te
+WHERE t.OPR_ID = te.GUIYDAIH AND te.YNGYJIGO = (SELECT YNGYJIGO
+    FROM teller
+    WHERE GUIYDAIH = 1041 AND level = 1) AND t.ACCT_ID = 8923945934
+
+-- get chief account aggreg 
+SELECT SUM(TR_AM), COUNT(TR_NO)
+FROM transaction t, teller te
+WHERE t.OPR_ID = te.GUIYDAIH AND te.YNGYJIGO = (SELECT YNGYJIGO
+    FROM teller
+    WHERE GUIYDAIH = 1041 AND level = 1) AND t.ACCT_ID = 8923945934
+
+
+
+-- president detector
+SELECT first, second, sum(COUNT) COUNT, SUM(AMOUNT) AMOUNT
+FROM (
+        SELECT ACCT_ID first, OPP_ACCT_ID second, COUNT(TR_NO) AS COUNT , SUM(TR_AM) AMOUNT
+        FROM transaction
+        GROUP BY ACCT_ID, OPP_ACCT_ID
+    UNION ALL
+        SELECT OPP_ACCT_ID first, ACCT_ID second, COUNT(TR_NO) AS COUNT , SUM(TR_AM) AMOUNT
+        FROM transaction
+        GROUP BY ACCT_ID, OPP_ACCT_ID
+    ) t
+GROUP BY first, second
+ORDER BY COUNT DESC, AMOUNT DESC
+LIMIT 10
+
+
+-- president aggregation 
+SELECT SUM(TR_AM), COUNT(TR_NO)
+FROM transaction

@@ -1,0 +1,27 @@
+INFSCI 2725: Data Analytics
+
+Assignment 3: Validation and Testing
+
+File house-votes-84.txt (attached) contains 435 records of United
+States representatives.  Each record shows how the representative
+voted on each of 16 different issues (columns in the file).
+The following three files:
+
+  House Votes Manual.xdsl
+  House Votes Naive.xdsl
+  House Votes PC.xdsl
+
+contain GeNIe models that can be used as classification tools:
+Based on the voting records the models guess the party affiliation
+of the representative (there are only two parties represented in
+the United States Congress: Democratic and Republican).
+
+Your task is to test the three models (using GeNIe will be the
+easiest) and report for each of them:
+
+(1) Overall classification accuracy
+(2) Sensitivity and specificity for each of the two parties
+(3) Positive and negative predictive value for each of the two parties
+(4) Calibration curve for a selected bin count or window size
+
+Please use the "leave-one-out" cross-validation method in your tests.

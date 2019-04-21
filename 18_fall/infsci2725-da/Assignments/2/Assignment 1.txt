@@ -1,0 +1,35 @@
+Assignment 1: Storage and processing of data
+
+Choose one of the following systems:
+
+MongoDB (help link: http://www.mongodb.org/display/DOCS/Home)
+Neo4j (help link: http://docs.neo4j.org/chunked/stable/index.html)
+
+We have provided a data set which consists of 10 million ratings and 100,000 tag applications applied to 10,000 movies by 72,000 users.
+
+In case of MongoDB: design aggregate structures to represent the data (you might have one document that stores all information aggregated under user object or one document that stores information about aggregate under move object, or split into two or tree aggregations).
+
+In case of the Neo4j: represent the data as a graph, where users and movies (and maybe genres) are the nodes of the graph and edges connect users and movies if user rated or tagged the movie (so each edge can have several properties or there can be two different edges, one for rating one for tagging).
+
+Your models should be able to answer the following queries below.
+
+Create a data store using your chosen system. Extract, transform and load the provided data set into your data storage.
+
+1) Write a query that finds average rating of each movie.
+
+2) Write a query that finds users who are similar to a given user (target user), the id of the target user is an input parameter.  Users are similar to the target user if they rate the same movies.
+
+3) Write a query that finds to number of movies in each genre.
+
+4) Write 3 different queries of your choice to demonstrate that your data storage is working. 
+
+
+Hints:
+
+zip file with data has a readme file which contains a description of the data files.
+
+In each of the case, you will need to write a program in a programming language of your choice (one that is, of course, supported by the system). For your information, Java is supported by both of the systems.  The queries will be also in your programming language calling methods of the the system.
+
+If you cannot answer one of the 3 specific queries, please write the reasons why you cannot do that. Maybe it is the limit of the data model or data store or query functionality.
+
+You should submit a zip file with your program and a brief document explaining what you did, queries that your asked, and important pats of the results.

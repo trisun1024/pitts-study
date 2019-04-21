@@ -1,0 +1,68 @@
+Assignment 5: Causal Discovery
+
+Your task is to verify the findinings in [Druzdzel & Glymour 1994]
+[Marek J. Druzdzel and Clark Glymour. Causal inferences from databases:
+Why universities lose students. In Clark Glymour and Gregory F. Cooper
+(eds), Computation, Causation, and Discovery, Chapter 19, pages 521-539,
+AAAI Press, Menlo Park, CA, 1999, an older version is available at:
+http://www.pitt.edu/~druzdzel/ftp/kdd94.pdf.]
+concerning student retention in US colleges.  The original study
+was performed on 1992 US News and World Report data.  The data
+that you will be studying is for the year 1993.
+
+There are some small differences in variables under study between the
+1992 and 1993 data sets.  Because freshmen retention and senior
+graduation rates differred so little (most students who drop out do
+so in their freshmen year), freshmen retention has been eliminated.
+What used to be "apgra" is in the 1993 data set called "apret" (this
+is the percentage of student retention over the four years).
+(We rerun the 1992 data set and verified that the conclusion
+regarding the impact of the quality of incoming students on the
+retention rate is the same.)  Otherwise all variables are the
+same (but the measurements are for the year 1993).
+
+Do the 1993 data support Druzdzel & Glymour's conclusions?  If not,
+why not.  Can you find anything else going on in the data (i.e.,
+is there any structure in the data?)?  What are the causal graphs
+suggested by GeNIe?  What causes student retention?  Please, feel
+free to help GeNIe using your common sense knowledge of interactions
+between the variables included in the data set (not necessarily the
+knowledge inputed by Druzdzel & Glymour).  For example, you might
+know something about the time precedence.  Perhaps there are pairs
+of variables for which we are reasonably sure that there is/there
+is not an arc between them?  Check the sensitivity of your result
+to the significance level.  Druzdzel & Glymour made the assumption
+that the data are normally distributed and linearly dependent (this
+is an implicit assumption used in the PC algorithm in GeNIe).
+Please, feel free to check whether the assumption is indeed valid
+in the data using the graphing capabilities in GeNIe.
+
+You don't need to make this a lot of work, but please, run the PC
+algorithm at least a few times and look critically at the results.
+Describe your observations and conclusions.
+
+I have included the data file on the CourseWeb.
+
+The software that you should use in this assignment is GeNIe,
+available for download at the following location:
+
+  http://genie.sis.pitt.edu/
+
+The on-line help for learning/causal discovery functionality may
+not be comprehensive but here is in brief how you can use it:
+
+(1) Open the data file through File menu/Open Data File.
+(2) Choose Learn New Network from Data menu.
+(3) Choose the PC algorithm and set the significance level
+    (PC algorithm uses classical statistical independence
+    tests and here is where you set the significance level
+    for these tests).
+(4) You can enter the background knowledge by clicking the
+    Background Knowledge button.  Here you can force and
+    forbid causal connections and also order variables in
+    temporal tiers.  A variable that is in a later tier
+    cannot cause variables in earlier tiers.
+(5) The result of the algorithm is a "pattern," i.e., an
+    equivalence class of causal graphs that are compatible
+    with the data.  The true graph is one of the graphs
+    represented in the pattern.

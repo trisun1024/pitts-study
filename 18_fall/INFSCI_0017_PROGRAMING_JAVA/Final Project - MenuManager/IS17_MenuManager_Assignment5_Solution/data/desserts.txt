@@ -1,3 +1,0 @@
-Ice Cream@@Choose among vanilla, mango, pineapple, chocolate and orange ice cream.@@250
-Fruit Salad@@Oranges, bananas, apples, grapes, strawberries.@@200
-Chocolate Cake@@Low calorie chocolate cake.@@175

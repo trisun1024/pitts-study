@@ -1,0 +1,262 @@
+---
+title: "INFSCI 2160 DATA MINING HOMEWORK 5"
+author: "Jing Pang"
+date: "4/2/2019"
+output: html_document
+---
+
+
+```{r}
+packageCheck <- function(x){
+  for(i in x){
+    if(!require(i, character.only = TRUE)){
+      install.packages(i, dependencies = TRUE)
+      require( i , character.only = TRUE )
+    }
+  }
+}
+packageCheck(c("tm", "lsa", "ggplot2", "dplyr", "stringr", "qdapDictionaries"))
+
+# import data 
+df <- read.csv("~/Dropbox/19 Spring Term/INFSCI_2160_DM/HWs/HW5/HOMEWORK_5_REUTERS_NEWSGROUP.csv")
+
+```
+## Task 1 (Text Mining): 
+#### Analyze the topical clusters from text data. We will use the Reuters newsgroup dataset available on Piazza. The dataset description can be found here: https://www.cs.umb.edu/~smimarog/textmining/datasets/
+
+* Plot the histogram of number of documents per topic. Find and list the four most popular topics in terms of number of documents.
+
+```{r}
+# analysis
+head(df)
+dim(df)
+
+# count frequency of topics
+TopicFreq <- df %>%
+  dplyr::count(df$Topic, sort=TRUE)
+TopicFreq <- as.data.frame(TopicFreq)
+colnames(TopicFreq)[1] <- "Topic"
+colnames(TopicFreq)[2] <- "Freq"
+
+# plot histogram of number of documents per topic
+df %>%
+  dplyr::count(Topic, sort = TRUE) %>%
+  mutate(Topic = reorder(Topic, n)) %>%
+  ggplot(aes(Topic, n)) +
+  geom_col() +
+  xlab(NULL) +
+  coord_flip()
+
+# Top 4 most popular tocpis in terms of documents
+top4 <- TopicFreq[1:4,]
+top4
+```
+
+* Extract contents in these top 4 topics as your corpus. Run pre-processing on this corpus and use terms that appear at least 4 times in the corpus to create a term-document matrix. Use the term-document matrix to generate an MDS plot (reviewed in class) where each node represents a document with color indicating its topic.
+
+```{r}
+# extract contents in these top 4 topics
+df_new <- inner_join(df, top4, by = c("Topic" = "Topic"))
+
+# combine into a new file corpus
+corpus <- Corpus(VectorSource(df_new$Content))
+
+# pre-processing corpus
+corpus <- tm_map(corpus, tolower) ## convert text to lower case
+corpus <- tm_map(corpus, removePunctuation) ## remove punctuations
+corpus <- tm_map(corpus, removeNumbers) ## remove numbers
+corpus <- tm_map(corpus, function(x) removeWords(x, stopwords("english"))) ## remove stopwords
+corpus <- tm_map(corpus, stemDocument, language = "english") ## stemming
+
+# transfer corpus to term-document
+td <- TermDocumentMatrix(corpus)
+inspect(td[1,])
+
+# downsize corpus by removing terms that appear less than 4 times 
+is.word  <- function(x) x %in% GradyAugmented
+termsBigger4 <- findFreqTerms(td, 4)
+termToRemove <- setdiff(termsBigger4, GradyAugmented)
+# cover old corpus with new corpus that removing terms appeared less than 4 times
+corpus <- tm_map(corpus, content_transformer(removeWords), termToRemove)
+
+# build final term-document from new corpus
+td.mat <- as.matrix(TermDocumentMatrix(corpus))
+
+# distance matrix
+dist.mat <- dist(t(as.matrix(td.mat))) ## compute distance matrix
+# dist.mat  ## check distance matrix
+
+## generate mds plot
+doc.mds <- cmdscale(dist.mat, k = 2)
+data <- data.frame(x = doc.mds[, 1], y = doc.mds[, 2], topic = df_new$Topic, id = row.names(df_new))
+ggplot(data, aes(x = x, y = y, color=topic)) + 
+  geom_point() + geom_text(aes(x = x, y = y - 0.2, label = id))
+
+```
+
+* Apply TDIDF weighting on the term document matrix. Next, apply latent semantic analysis on the term document matrix. Generate MDS plots corresponding to these matrices
+
+```{r}
+td.mat.w = lw_tf(td.mat) * gw_idf(td.mat)  ## tf-idf weighting
+dist.mat = dist(t(as.matrix(td.mat.w))) ## compute distance matrix
+
+## generate mds plot using new distance matrix
+doc.mds <- cmdscale(dist.mat, k = 2)
+data <- data.frame(x = doc.mds[, 1], y = doc.mds[, 2], topic = df_new$Topic, id = row.names(df_new))
+ggplot(data, aes(x = x, y = y, color=topic)) + 
+  geom_point() + geom_text(aes(x = x, y = y - 0.2, label = id))
+```
+
+* Write down your observation based on these two plots.
+
+The first plot is using dataset without any modification; the second plot is using TF-IDF method to rebalance the dataset. Because all terms are not created equal, we use TF-IDF method to balance this situation. The second plot is more smooth and reasonable than the first one.
+
+
+## Task 2 (Recommendation): 
+#### Create a recommender system based on the book rating data available here: http://www.informatik.uni-freiburg.de/~cziegler/BX/. In the dataset, load the BX-Book-Ratings.csv and BX-Books.csv data. Extract books published from 1998 to present. Create a book rating matrix from these books, and in this matrix, only consider books that were rated by at least 10 users, and users that rated at least 10 books.
+
+```{r}
+packageCheck <- function(x){
+  for(i in x){
+    if(!require(i, character.only = TRUE)){
+      install.packages(i, dependencies = TRUE)
+      require( i , character.only = TRUE )
+    }
+  }
+}
+packageCheck(c("recommenderlab", "reshape2", "ggplot2", "dplyr", "plyr", "readr"))
+
+# load data 
+bookrating <- read_delim("~/Dropbox/19 Spring Term/INFSCI_2160_DM/HWs/HW5/BX-Book-Ratings.csv", ";", escape_double = FALSE, trim_ws = TRUE)
+books <- read_delim("~/Dropbox/19 Spring Term/INFSCI_2160_DM/HWs/HW5/BX-Books.csv", ";", escape_double = FALSE, trim_ws = TRUE)
+
+# summary
+head(bookrating)
+head(books)
+summary(bookrating)
+# histogram of book rating
+hist(bookrating$`Book-Rating`)
+
+# convert numeric to factor
+bookrating$`User-ID` <- as.factor(bookrating$`User-ID`)
+
+# create function to find books published from 1998 to present
+func_published <- function(x) {
+  x > 1997
+}
+# get books published from 1998 to present
+books$correct <- lapply(books$`Year-Of-Publication`, func_published)
+d_book <- subset(books, correct=="TRUE")[,1]
+
+# create function to select at least 10
+func_atleaseten <- function(x) {
+  x > 9
+}
+# count user and ISBN 
+d1 <- plyr::count(bookrating$`User-ID`)
+d1$correct <- lapply(d1$freq, func_atleaseten)
+d1 <- subset(d1, correct=="TRUE")[,1]
+
+d2 <- plyr::count(bookrating$ISBN)
+d2$correct <- lapply(d2$freq, func_atleaseten)
+d2 <- subset.data.frame(d2, correct=="TRUE")[,1]
+
+# remove users and ISBN which is not meet requirement.
+df <- inner_join(bookrating, d_book, by = c("ISBN" = "ISBN"))
+df <- inner_join(df, d1, by = c("User-ID" = "x"))
+df <- inner_join(df, d2, by = c("ISBN" = "x"))
+
+d_book <- subset(books, `Year-Of-Publication`>1997)
+d1 <- subset(d1, freq>9)
+d2 <- subset(d2, freq>9)
+df <- subset(bookrating, ISBN %in% d_book$ISBN)
+df <- subset(df, `User-ID` %in% d1$x)
+df <- subset(df, ISBN %in% d2$x)
+
+# convert dataframe to matrix
+df <- df[,1:3]
+r <- acast(df, `User-ID` ~ ISBN)
+# convert to recommendation matrix
+r <- as(r,"realRatingMatrix")
+# normalize
+r_m <- recommenderlab::normalize(r)
+r_z <- recommenderlab::normalize(r,method="Z-score")
+
+# plot histogram to show the distribution of the ratings and normalized ratings
+hist(getRatings(r),breaks = 100)
+hist(getRatings(r_m),breaks = 100)
+hist(getRatings(r_z),breaks = 100)
+```
+
+* Run and test a recommender system built with different recommendation methods, including random, popular, user-based collaborative filtering, item-based collaborative filtering. Evaluate the different methods by using k-fold cross-validation (k = 4). Generate a performance table in terms of performance measures MAE, MSE, and RMSE. Hint: use “recommenderlab” library. Documentation can be found here: https://www.rdocumentation.org/packages/recommenderlab/versions/0.2-4
+
+```{r}
+set.seed(1234)
+e <- evaluationScheme(r, method="cross-validation", train=0.9, k=4, given=-1, goodRating=5)
+e
+
+## create a random collaborative filtering
+r1 <- Recommender(getData(e, "train"), "RANDOM")
+
+## create an popular collaborative filtering
+r2 <- Recommender(getData(e, "train"), "POPULAR")
+
+## create a user-based collaborative filtering
+r3 <- Recommender(getData(e, "train"), "UBCF")
+
+## create an item-based collaborative filtering
+r4 <- Recommender(getData(e, "train"), "IBCF")
+
+## compute predicted ratings for the known part (rated items) of the test data
+p1 <- predict(r1, getData(e, "known"), type="ratings")
+p2 <- predict(r2, getData(e, "known"), type="ratings")
+p3 <- predict(r3, getData(e, "known"), type="ratings")
+p4 <- predict(r4, getData(e, "known"), type="ratings")
+
+## calculate the error between the prediction and the unknown part of the test data
+error <- rbind(
+  RANDOM = calcPredictionAccuracy(p1, getData(e, "unknown")),
+  POPULAR = calcPredictionAccuracy(p2, getData(e, "unknown")),
+  UBCF = calcPredictionAccuracy(p3, getData(e, "unknown")),
+  IBCF = calcPredictionAccuracy(p4, getData(e, "unknown"))
+)
+error
+```
+
+
+```{r}
+## comparison of several recommender algorithms
+set.seed(1234)
+scheme <- evaluationScheme(r, method="cross-validation", train=0.9, k=4, given=-1, goodRating=5)
+scheme
+
+algorithms <- list(
+  "random items" = list(name="RANDOM", param=NULL),
+  "popular items" = list(name="POPULAR", param=NULL),
+  "user-based CF" = list(name="UBCF", param=list(nn=50)),
+  "item-based CF" = list(name="IBCF", param=list(k=50))
+)
+## run algorithms
+results_topN <- evaluate(scheme, algorithms, type = "topNList",
+                    n=c(1, 3, 5, 10, 15, 20))
+
+results_topN
+plot(results_topN, annotate=c(1,3), legend="bottomright")
+plot(results_topN, "prec/rec", annotate=3, legend="topleft")
+
+## run algorithms
+results_rating <- evaluate(scheme, algorithms, type = "ratings")
+results_rating
+plot(results_rating, ylim = c(0,30))
+
+```
+
+
+* Write down your observations based on the final performance table.
+
+From the previous analysis, we can clearly see that there are no bigger differences in RMSE and MAE performance measurements in all four algorithms. But there is a difference in MSE measurement. The user-based CF algorithm performs the smallest value of MSE. 
+
+
+
+
+

@@ -1,0 +1,31 @@
+Environment: Java JDK 11
+IDE: IntelliJ IDEA
+
+How to read: There are three java files in the folder of indexing. 
+First to read PreProcessedCorpusReader.java: this is used to open two result files after the processes of Assignment1.
+Second to read MyIndexWriter.java: this is used to build indexes of each document.
+Third to read MyIndexReader.java: this is used to retrieve posting lists of tokens from an index. 
+
+How to run: use HW2main.java to run the total program.
+
+The total time period of finishing running my code is around 3.8 min
+
+The retrieval result of token "acow" in "trecweb" is:
+totaly document count:  198361
+index web corpus running time: 0.6718333333333333 min
+ >> the token "acow" appeared in 3 documents and 3 times in total
+       lists-092-3952951    154963         1
+       lists-092-4113429    154964         1
+      lists-108-11347927    186006         1
+load index & retrieve running time: 0.10365 min
+
+The retrieval result of token "yhoo" in "trectext" is:
+totaly document count:  503473
+index text corpus running time: 2.2781666666666665 min
+ >> the token "yhoo" appeared in 5 documents and 5 times in total
+        NYT19990208.0397    291085         1
+        NYT19990405.0253    313384         1
+        NYT20000717.0201    477373         1
+        NYT20000927.0406    502701         1
+        NYT20000928.0343    503146         1
+load index & retrieve running time: 0.7118166666666667 min
